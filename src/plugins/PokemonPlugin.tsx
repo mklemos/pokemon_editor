@@ -34,8 +34,8 @@ export function PokemonPlugin({ pokemon }: { pokemon: Pokemon[] }) {
         }
         
         setDropdownPosition({
-          top: rect.bottom - editorRect.top + lineHeight + 60, // Increase the pixel value here for more space
-          left: left // Adjusted left position
+          top: rect.bottom - editorRect.top + lineHeight,
+          left: left
         });
       }
     }

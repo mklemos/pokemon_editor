@@ -1,5 +1,16 @@
-import { DecoratorNode } from 'lexical';
+import { DecoratorNode, EditorConfig, NodeKey, SerializedLexicalNode, Spread } from 'lexical';
 import React, { useState } from 'react';
+
+export type SerializedPokemonNode = Spread<
+  {
+    name: string;
+    sprite: string;
+    height: number;
+    weight: number;
+    types: string[];
+  },
+  SerializedLexicalNode
+>;
 
 export class PokemonNode extends DecoratorNode<React.ReactNode> {
   __name: string;
@@ -13,11 +24,11 @@ export class PokemonNode extends DecoratorNode<React.ReactNode> {
   }
 
   static clone(node: PokemonNode): PokemonNode {
-    return new PokemonNode(node.__name, node.__sprite, node.__height, node.__weight, node.__types);
+    return new PokemonNode(node.__name, node.__sprite, node.__height, node.__weight, node.__types, node.__key);
   }
 
-  constructor(name: string, sprite: string, height: number, weight: number, types: string[]) {
-    super();
+  constructor(name: string, sprite: string, height: number, weight: number, types: string[], key?: NodeKey) {
+    super(key);
     this.__name = name;
     this.__sprite = sprite;
     this.__height = height;
@@ -25,7 +36,7 @@ export class PokemonNode extends DecoratorNode<React.ReactNode> {
     this.__types = types;
   }
 
-  createDOM(): HTMLElement {
+  createDOM(_config: EditorConfig): HTMLElement {
     return document.createElement('span');
   }
 
@@ -35,6 +46,23 @@ export class PokemonNode extends DecoratorNode<React.ReactNode> {
 
   decorate(): React.ReactNode {
     return <PokemonComponent name={this.__name} sprite={this.__sprite} height={this.__height} weight={this.__weight} types={this.__types} />;
+  }
+
+  exportJSON(): SerializedPokemonNode {
+    return {
+      type: 'pokemon',
+      version: 1,
+      name: this.__name,
+      sprite: this.__sprite,
+      height: this.__height,
+      weight: this.__weight,
+      types: this.__types,
+    };
+  }
+
+  static importJSON(serializedNode: SerializedPokemonNode): PokemonNode {
+    const { name, sprite, height, weight, types } = serializedNode;
+    return $createPokemonNode(name, sprite, height, weight, types);
   }
 }
 
