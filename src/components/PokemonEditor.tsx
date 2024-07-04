@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -66,18 +66,15 @@ function SaveButton() {
   return (
     <>
       <button onClick={saveContent}>Save Note</button>
-      <div className="saved-notes">
-        <h3>Saved Notes:</h3>
-        <ul>
-          {notes.map((note) => (
-            <li key={note.id}>
-              Note saved at {new Date(note.timestamp).toLocaleString()}
-              <button onClick={() => loadNote(note.content)}>
-                Load
-              </button>
-            </li>
-          ))}
-        </ul>
+      <div className="saved-notes-grid">
+        {notes.map((note) => (
+          <div key={note.id} className="note-card">
+            <p>Note saved at {new Date(note.timestamp).toLocaleString()}</p>
+            <button onClick={() => loadNote(note.content)}>
+              Load
+            </button>
+          </div>
+        ))}
       </div>
     </>
   );
@@ -103,19 +100,21 @@ function PokemonEditor() {
   };
 
   return (
-    <div className="editor-container">
-      <LexicalComposer initialConfig={initialConfig}>
-        <Toolbar />
-        <RichTextPlugin
-          contentEditable={<ContentEditable className="ContentEditable__root" />}
-          placeholder={<div className="editor-placeholder">Start your Poké story...</div>}
-          ErrorBoundary={LexicalErrorBoundary}
-        />
-        <HistoryPlugin />
-        <ListPlugin />
-        <PokemonPlugin pokemon={pokemon} />
-        <SaveButton />
-      </LexicalComposer>
+    <div className="pokemon-editor-container">
+      <div className="editor-container">
+        <LexicalComposer initialConfig={initialConfig}>
+          <Toolbar />
+          <RichTextPlugin
+            contentEditable={<ContentEditable className="ContentEditable__root" />}
+            placeholder={<div className="editor-placeholder">Start your Poké story...</div>}
+            ErrorBoundary={LexicalErrorBoundary}
+          />
+          <HistoryPlugin />
+          <ListPlugin />
+          <PokemonPlugin pokemon={pokemon} />
+          <SaveButton />
+        </LexicalComposer>
+      </div>
     </div>
   );
 }
