@@ -63,6 +63,13 @@ function SaveButton() {
     });
   };
 
+  const deleteNote = (noteId: string) => {
+    const updatedNotes = notes.filter(note => note.id !== noteId);
+    setNotes(updatedNotes);
+    localStorage.setItem('pokemonEditorNotes', JSON.stringify(updatedNotes));
+    alert('Note deleted!');
+  };
+
   return (
     <>
       <button onClick={saveContent}>Save Note</button>
@@ -70,9 +77,8 @@ function SaveButton() {
         {notes.map((note) => (
           <div key={note.id} className="note-card">
             <p>Note saved at {new Date(note.timestamp).toLocaleString()}</p>
-            <button onClick={() => loadNote(note.content)}>
-              Load
-            </button>
+            <button onClick={() => loadNote(note.content)}>Load</button>
+            <button onClick={() => deleteNote(note.id)}>Delete</button>
           </div>
         ))}
       </div>
