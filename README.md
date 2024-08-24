@@ -47,7 +47,7 @@ PokéEdit is a fun and powerful text editor built with React, TypeScript, and th
 
 ### Development Notes:
 
-* The project fetches Pokémon data from the PokéAPI using the `fetch` API.
+* The project fetches Pokémon data from the [PokéAPI](https://pokeapi.co/) using the `fetch` API.
 * Lexical editor handles core editing functionalities. Custom nodes and plugins are developed to implement Pokémon-specific features.
 
 ### Contributing:
